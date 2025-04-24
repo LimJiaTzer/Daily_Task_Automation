@@ -34,6 +34,8 @@ A Python script designed to automate your mundane Windows-based daily tasks and 
   Interactive command-line prompts with clear instructions and visual feedback using `colorama` and `cowsay`.
 - 🔧 **Extensible Task Engine**  
   Modular architecture makes it easy to add new tasks and customize workflows.
+- 📝 **Well-documented Functions**
+  Well-documented functions for easier understanding and usage for new task creation.
 
 ---
 
