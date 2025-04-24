@@ -14,7 +14,7 @@ A Python script designed to automate your mundane Windows-based daily tasks and 
   Programmatically open, focus, or close desktop applications (like Outlook, SAP Logon) and web pages.
 - 🔁 **SAP Reinitialization**  
   Overcome SAP timeout issues and reinitiates the application to maintain smooth operation.
-- 🌛 **Time defined tasks"  
+- 🌛 **Time defined tasks**  
   Automatically detect time and run tasks after the time indicated
 
 ---
