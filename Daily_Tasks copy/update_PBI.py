@@ -26,12 +26,12 @@ def downloading_supply_analysis() -> bool:
             # Format the date as YYYY-MM-DD
             monday_date = monday.strftime("%Y-%m-%d")
             # Set up WebDriver
-            edge_driver_path = r"C:\Users\85210748\Downloads\edgedriver_win32\msedgedriver.exe"
+            edge_driver_path = r"C:\Users\85210748\Downloads\edgedriver_win32\msedgedriver.exe" #--> YOU NEED TO KEY IN THE PATH TO YOUR WEBDRIVER DOWNLOADED HERE
             service = Service(edge_driver_path)
             driver = webdriver.Edge(service=service)
 
             # Open the webpage
-            driver.get("https://eu1.kinaxis.net/web/batp02_prd/RapidResponse/web/default.aspx?logoutRedirect=gwssi&logoutRedirect=gwssi&logoutRedirect=gwssi&logoutRedirect=gwssi&logoutRedirect=gwssi&logoutRedirect=gwssi&ap=1#type=Workbook&name=BAT%20SP%20Planning%20Sheet&scope=public")
+            driver.get("") #-->ENTER THE LINK TO YOUR WEBPAGE
             wait = WebDriverWait(driver, 30) #timeout after a minute
 
             if not helper.find_and_click_web_element(driver, "//button[@data-test-id='sign-in-react__already-signed-in--continue-button']"):
