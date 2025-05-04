@@ -1,0 +1,5 @@
+
+2. You have to download the required libraries as shown in requirements.txt. 
+3. Create a new task and add it to config.py. 
+4. You may want to look at helper.py to see what are the available function.
+4. The steps for adding to config.py is shown in the file itself.
