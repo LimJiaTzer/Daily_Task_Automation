@@ -51,7 +51,10 @@ A Python script designed to automate your mundane Windows-based daily tasks and 
 
 ---
 
-## 📂 Project Structure
+## 📂 Download Instructions
+ - Download the folder containing the all the python files. You will need config.py, helper.py and Main.py. The sample.py is a sample script for the creation of a new task.  
+  Don't worry, it is considerably easy to create a new task as most actions you need are likely already included in helper.py.
+
 
 
 
