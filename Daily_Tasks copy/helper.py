@@ -34,8 +34,7 @@ def focus_python_script()-> None:
 
         # Bring the window to focus
         window.set_focus()
-        print("🐍 Python script window focused.")
-
+        
     except Exception as e:
         print(f"⚠️ Error: {e} ⚠️")
 
@@ -45,27 +44,28 @@ def focus_python_script()-> None:
 The functions below is to ask user for input
 ----------------------------------------------
 """
-def get_input_with_timeout(prompt:str, timeout:int) -> str:
-    """ Function to get user input with a timeout. If no input is given, return None. 
-    Args:
-        prompt (str): The prompt to display to the user.
-        timeout (int): The timeout in seconds.
-    Returns:
-        str: The user input if provided within the timeout.
-
-        None: If no input is provided within the timeout.
-    """
+def get_input_with_timeout(prompt: str, timeout: int) -> str | None:
     user_input = [None]
 
     def input_thread():
-        user_input[0] = input(prompt).strip().lower()  # Convert to lowercase for easier checking
+        try:
+            user_input[0] = input(prompt).strip().lower()
+        except EOFError:
+            pass
 
-    thread = threading.Thread(target=input_thread)
-    thread.daemon = True  # Daemon thread exits when the main program exits
+    thread = threading.Thread(target=input_thread, daemon=True)
     thread.start()
-    thread.join(timeout)  # Wait for the thread for `timeout` seconds
 
-    return user_input[0]  # Return user input or None if timed out
+    thread.join(timeout)
+    
+    if thread.is_alive():
+        focus_python_script()
+        pyautogui.press('y')  # Simulates pressing Enter
+        pyautogui.press('enter')
+
+        thread.join(1)  # Give the thread a moment to finish
+
+    return user_input[0]
 
 def proceed(prompt:str) -> bool:
     """ Function to get user input (yes/no) and return True or False based on input. 
