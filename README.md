@@ -66,13 +66,14 @@ Start by downloading or cloning the repository. The following Python files are e
 
 To create a new task:
 
-1. **Use `sample.py` as a Template:**  
-   Refer to `sample.py` for a working example. It demonstrates the general structure and usage of existing functions.
+1. **Use `sample.py` or `sample_for_webaccess_and_selenium.py` as a Template:**  
+   Refer to `sample.py` for a working example. It demonstrates the general structure and usage of existing basic functions.  
+   Refer to `sample_for_webaccess_and_selenium` for a working example for selenium usage in automating web-related tasks.
 
-2. **Leverage Existing Functions:**  
+3. **Leverage Existing Functions:**  
    Most actions you'll need are already implemented in `helper.py`. Simply import and use them as needed.
 
-3. **Add Custom Logic (if necessary):**  
+4. **Add Custom Logic (if necessary):**  
    If your task requires additional functionality not found in `helper.py`:
    - Write your custom functions.
    - Add them to `helper.py` to maintain consistency and reusability across tasks.
