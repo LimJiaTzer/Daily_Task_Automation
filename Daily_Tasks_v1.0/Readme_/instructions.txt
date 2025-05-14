@@ -1,0 +1,22 @@
+Steps to Add a New Task:
+
+Install Required Libraries:
+
+Locate the requirements.txt file.
+Open your terminal or command prompt.
+Navigate to the directory containing requirements.txt.
+Run the following command to install the necessary libraries:
+Bash
+
+pip install -r requirements.txt
+Create a New Task:
+You can refer to sample.py to view an example of a task
+
+Add the New Task to config.py:
+Open the config.py file.
+Carefully review the comments and existing structure within config.py. The file itself contains instructions on how to add a new task. Look for sections that define or list available tasks.
+Follow the specified format in config.py to integrate your newly created task.
+
+Explore Available Helper Functions:
+Open the helper.py file.
+Read through the code in helper.py to understand the purpose and usage of the available functions. These functions might provide useful tools or utilities for your new task.
