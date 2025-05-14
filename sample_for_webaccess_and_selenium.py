@@ -9,7 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 import helper
 
 
-def downloading_supply_analysis() -> bool:
+def downloading() -> bool:
     downloaded = False
     while not downloaded:
         try:
@@ -58,7 +58,7 @@ def downloading_supply_analysis() -> bool:
 
 if __name__ == "__main__":
     print(f"🌟🌟Starting task🌟🌟")
-    if downloading_supply_analysis():
+    if downloading():
         print("✅✅ Downloading supply analysis file completed✅✅")
         input("Hit 'Enter' to exit...")
     else:
