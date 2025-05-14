@@ -21,12 +21,12 @@ def downloading_supply_analysis() -> bool:
             # Format the date as YYYY-MM-DD
             monday_date = monday.strftime("%Y-%m-%d")
             # Set up WebDriver
-            edge_driver_path = r"" # Path to your webdriver
+            edge_driver_path = r"" # ADD PATH TO YOUR WEBDRIVER
             service = Service(edge_driver_path)
             driver = webdriver.Edge(service=service)
 
             # Open the webpage
-            driver.get("")
+            driver.get("") # ADD YOUR SITE LINK
             wait = WebDriverWait(driver, 30) #timeout after a minute
 
             if not helper.find_and_click_web_element(driver, "//button[@data-test-id='sign-in-react__already-signed-in--continue-button']"):
