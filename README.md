@@ -51,10 +51,41 @@ A Python script designed to automate your mundane Windows-based daily tasks and 
 
 ---
 
-## 📂 Download Instructions
- - Download the folder containing the all the python files. You will need config.py, helper.py and Main.py. The sample.py is a sample script for the creation of a new task.  
-  Don't worry, it is considerably easy to create a new task as most actions you need are likely already included in helper.py.
+## 🛠️ Project Setup & Task Creation Guide
 
+### 📦 Download and Setup
+
+Start by downloading or cloning the repository. The following Python files are essential:
+
+- `config.py` – Stores configuration variables and settings.
+- `helper.py` – Contains utility functions used across multiple tasks.
+- `Main.py` – Main execution script.
+- `sample.py` – A reference script showing how to create and execute a new task.
+
+### 🧩 Creating a New Task
+
+To create a new task:
+
+1. **Use `sample.py` as a Template:**  
+   Refer to `sample.py` for a working example. It demonstrates the general structure and usage of existing functions.
+
+2. **Leverage Existing Functions:**  
+   Most actions you'll need are already implemented in `helper.py`. Simply import and use them as needed.
+
+3. **Add Custom Logic (if necessary):**  
+   If your task requires additional functionality not found in `helper.py`:
+   - Write your custom functions.
+   - Add them to `helper.py` to maintain consistency and reusability across tasks.
+
+> **Tip:** Keeping all helper functions inside `helper.py` helps maintain code structure, improves generality, and makes debugging easier.
+
+### 📁 File Structure Overview
+project-root/  
+│  
+├── config.py # Configuration and settings  
+├── helper.py # Reusable utility functions  
+├── Main.py # Entry point of the application  
+└── sample.py # Example script for task creation  
 
 
 
