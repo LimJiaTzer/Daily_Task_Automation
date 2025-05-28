@@ -1,11 +1,5 @@
-import os
-import re
-import time
 import datetime
 import config
-from selenium import webdriver
-from selenium.webdriver.edge.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
 import helper
 
 
@@ -20,47 +14,51 @@ def downloading() -> bool:
 
             # Format the date as YYYY-MM-DD
             monday_date = monday.strftime("%Y-%m-%d")
-            # Set up WebDriver
-            edge_driver_path = r"" # ADD PATH TO YOUR WEBDRIVER
-            service = Service(edge_driver_path)
-            driver = webdriver.Edge(service=service)
+
+            webautomation = helper.WebAutomation(browser_type="edge")
 
             # Open the webpage
-            driver.get("") # ADD YOUR SITE LINK
-            wait = WebDriverWait(driver, 30) #timeout after a minute
+            webautomation.goto("")
 
-            if not helper.find_and_click_web_element(driver, "//button[@data-test-id='sign-in-react__already-signed-in--continue-button']"):
+            # clicking elements
+            if not webautomation.find_and_click_web_element( "//button[@data-test-id='sign-in-react__already-signed-in--continue-button']"):
                 print("No login needed")
+            webautomation.find_and_click_web_element("//input[@data-test-id='data-settings-react__filter-item-control-VariableShowAllTabs--picker-control--input--input-control' and @aria-label='Show All Tabs']")
+
+            webautomation.find_and_click_web_element("//button[@data-test-id='workbook-react__tab-bar--overflow-menu-icon']")
+
+            webautomation.find_and_click_web_element("//div[@data-test-id='workbook-react__tab-bar--basic-tab-bar--overflow-menu--list-item' and @aria-label='6']")
+
+            # waiting for element to disappear
+            webautomation.wait_for_element_to_disappear("//button[@data-test-id='worksheet-react__async-cancel-button']")
             
-            helper.find_and_click_web_element(driver, "//input[@data-test-id='data-settings-react__filter-item-control-VariableShowAllTabs--picker-control--input--input-control' and @aria-label='Show All Tabs']")
-            helper.find_and_click_web_element(driver, "//div[@data-test-id='data-settings-react__filter-item-control-VariableShowAllTabs--list-item' and @aria-selected='false']")
-            helper.find_and_click_web_element(driver, "//button[@data-test-id='data-settings-react__open']")
-            helper.find_and_click_web_element(driver, "//button[@data-test-id='workbook-react__tab-bar--overflow-menu-icon']")
-            helper.find_and_click_web_element(driver, "//div[@data-test-id='workbook-react__tab-bar--basic-tab-bar--overflow-menu--list-item' and @aria-label='6']")
-            helper.wait_for_element_to_disappear(driver, "//button[@data-test-id='worksheet-react__async-cancel-button']")
-            helper.find_and_click_web_element(driver, "//button[@data-test-id='workbook-react__export-data-button' and @aria-label='ExportData']")
-            helper.find_and_type_into_web_element(driver, "//input[@data-test-id='export-data-workbook-dialog__input-container--input-control']", f"Supply Analysis_{monday_date}", clear_first=True)
-            helper.find_and_click_web_element(driver, "//button[@data-test-id='export-data-workbook-dialog__export-button']")
+            webautomation.find_and_click_web_element("//button[@data-test-id='workbook-react__export-data-button' and @aria-label='ExportData']")
+
+            #entry into an element
+            webautomation.find_and_type_into_web_element("//input[@data-test-id='export-data-workbook-dialog__input-container--input-control']", f"hello_{monday_date}", clear_first=True)
             
-            helper.find_and_move_file(config.downloads_folder, config.supply_analysis_folder, "Supply Analysis")
+            webautomation.find_and_click_web_element("//button[@data-test-id='export-data-workbook-dialog__export-button']")
+            
+            # move the file downloaded before quitting the driver
+            helper.find_and_move_file(config.source, config.destination, f"hello_{monday_date}")
             downloaded = True
         except Exception as e:
             print(f"⚠️ Error occurred: {e}")
-            if helper.proceed("\nDo you want to retry downloading supply analysis file? (y/n): "):
-                driver.quit()
+            if helper.proceed("\nDo you want to retry downloading hello file? (y/n): "):
+                webautomation.quit()
                 continue
             else:
                 print("Exiting the task...")
                 return False
-    driver.quit()
+    webautomation.quit()
     return True
     
 
 if __name__ == "__main__":
     print(f"🌟🌟Starting task🌟🌟")
     if downloading():
-        print("✅✅ Downloading supply analysis file completed✅✅")
+        print("✅✅ Downloading completed✅✅")
         input("Hit 'Enter' to exit...")
     else:
-        print("❌❌ Downloading supply analysis file failed ❌❌")
+        print("❌❌ Downloading failed ❌❌")
         input("Hit 'Enter' to exit...")
