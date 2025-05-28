@@ -87,7 +87,7 @@ project-root/
 ├── helper.py                       # Reusable utility functions  
 ├── Main.py                         # Entry point of the application  
 ├── sample.py                       # Example script for task creation  
-└── sample_for_webaccess_and_selenium.py # New script for web access and Selenium tasks
+└── sample_for_webaccess_and_selenium.py # Example script for web access and Selenium tasks
 
 
 
