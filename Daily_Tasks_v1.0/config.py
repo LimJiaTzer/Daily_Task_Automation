@@ -8,6 +8,7 @@ Edit File locations here
 """
 outlook_path = r"" # Path to your outlook executable
 sap_path = r"" # Path to your SAP executable
+driver_path = r"" # Path to your wendriver if using selenium
 
 """
 -----------------------------------------------------------------------------------------------------------------------------------
