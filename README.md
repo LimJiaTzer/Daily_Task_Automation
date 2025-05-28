@@ -81,12 +81,13 @@ To create a new task:
 > **Tip:** Keeping all helper functions inside `helper.py` helps maintain code structure, improves generality, and makes debugging easier.
 
 ### 📁 File Structure Overview
-project-root/  
-│  
-├── config.py # Configuration and settings  
-├── helper.py # Reusable utility functions  
-├── Main.py # Entry point of the application  
-└── sample.py # Example script for task creation  
+project-root/
+│
+├── config.py                       # Configuration and settings
+├── helper.py                       # Reusable utility functions
+├── Main.py                         # Entry point of the application
+├── sample.py                       # Example script for task creation
+└── sample_for_webaccess_and_selenium.py # New script for web access and Selenium tasks
 
 
 
