@@ -716,101 +716,181 @@ def find_and_move_file(source_folder: str, destination_folder: str, startswith: 
 
 """
 ---------------------------------------
-The functions below are to interact with web elements
+The class below is to interact with web elements, it contains the following methods
 1. find and click buttons
 2. find and type into an element
 3. wait for an element to disappear (typically used to detect loading)
 ---------------------------------------
 """
+     
+class WebAutomation:
+    def __init__(self, browser_type:str = "chrome"):
+        """Initializes the WebAutomation class with a website link and optional parameters.
+        Args:   
+            browser_type(str): Enter the browser type for your driver. Supported browsers are chrome(chrome), safari(safari) and microsoft edge(edge). Default is Chrome
 
-def find_and_click_web_element(driver, element:str, timeout: int = 30)-> bool:
-    """
-    Waits for a WebElement to be clickable and then clicks it.
+        """
+        self.browser_type = browser_type.lower()
 
-    Args:
-        driver: The Selenium WebDriver instance.
-        element (str): The Selenium WebElement to click.
-        timeout: Maximum time in seconds to wait for the element to be clickable. Default is 30 seconds
+        if not hasattr(config, 'driver_path') or not config.driver_path:
+            raise NameError("Edge driver path (edge_driver_path) not defined in config.")
+        service = Service(config.driver_path)
 
-    Returns:
-        bool: True if the click was successful, False otherwise.
-    """
-    try:
-        # Wait for the element to be present, visible, and clickable
-        wait = WebDriverWait(driver, timeout)
-        clickable_element = wait.until(EC.element_to_be_clickable((By.XPATH, element)))
+        try:
+            if self.browser_type == "edge":
+                self.driver = webdriver.Edge(service=service)
+                print("✅ Microsoft Edge WebDriver initialized successfully.")
 
-        # Perform the click
-        clickable_element.click()
-        print(f"✅ Element clicked")
-        return True
-    except TimeoutException:
-        print(f"⚠️ Error: Element was not found or not clickable within {timeout} seconds.")
-        return False
-    except (ElementNotInteractableException, ElementClickInterceptedException) as e:
-        print(f"⚠️ Error: Element found but could not be clicked (might be obscured, disabled, or not interactive). Details: {e}")
-        return False
-    except Exception as e:
-        print(f"⚠️ An unexpected error occurred during click: {e}")
-        return False
+            elif self.browser_type == "chrome":
+                self.driver = webdriver.Chrome(service=service)
+                print("✅ Google Chrome WebDriver initialized successfully.")
 
-def find_and_type_into_web_element(driver, element: str, text_to_type: str, clear_first: bool = True, timeout: int = 30):
-    """
-    Waits for a WebElement to be visible, optionally clears it, and types text into it.
+            elif self.browser_type == "safari":
+                if platform.system() != "Darwin": # Darwin is macOS
+                    print("⚠️ Safari WebDriver is primarily for macOS. Initialization might fail on other OS.")
+                    self.driver = webdriver.Safari()
+                print("✅ Apple Safari WebDriver initialized successfully.")
+                print("   Ensure 'Allow Remote Automation' is enabled in Safari's Develop menu on macOS.")
+            else:
+                print(f"⚠️ Unsupported browser type: '{browser_type}'. Please use 'edge', 'chrome', or 'safari'.")
+                raise ValueError(f"Unsupported browser type: '{browser_type}'.")
 
-    Args:
-        driver: The Selenium WebDriver instance.
-        element(str): The Selenium WebElement (e.g., input, textarea) to type into.
-        text_to_type: The string to type into the element.
-        clear_first: If True (default), clears the element before typing.
-        timeout: Maximum time in seconds to wait for the element to be visible.
-
-    Returns:
-        bool: True if typing was successful, False otherwise.
-    """
-    try:
-        # Wait for the element to be present and visible
-        wait = WebDriverWait(driver, timeout)
-        visible_element = wait.until(EC.visibility_of_element_located((By.XPATH, element)))
-
-        # Optional: Clear the field before typing
-        if clear_first:
-            visible_element.send_keys(Keys.CONTROL + "a")  # Select all text
-            visible_element.send_keys(Keys.DELETE)  # Delete selected text
-
-        # Perform the typing action
-        visible_element.send_keys(text_to_type)
-        print(f"✅ Successfully typed '{text_to_type}' into the element")
-        return True
-    except TimeoutException:
-        print(f"⚠️ Error: Element was not found or not visible within {timeout} seconds.")
-        return False
-    except ElementNotInteractableException as e:
-        print(f"⚠️ Error: Element found but could not be interacted with (might be disabled or not an input field). Details: {e}")
-        return False
-    except Exception as e:
-        print(f"⚠️ An unexpected error occurred during typing: {e}")
-        return False
+        except NameError as ne:
+            print(f"⚠️ Configuration Error: {ne}")
+            self.driver = None
+        except WebDriverException as wde:
+            driver_path_to_show = "default system path"
+            if self.browser_type == "edge":
+                driver_path_to_show = getattr(config, 'driver_path', 'N/A')
+            elif self.browser_type == "chrome":
+                driver_path_to_show = getattr(config, 'driver_path', 'N/A')
+            elif self.browser_type == "safari":
+                 driver_path_to_show = getattr(config, 'driver_path', 'default system path')
+            print(f"⚠️ WebDriver Error for {self.browser_type.capitalize()}: {wde}")
+            print(f"   Please ensure the driver at '{driver_path_to_show}' is correct, executable, and its version matches your browser version.")
+            if self.browser_type == "safari" and platform.system() == "Darwin":
+                 print("   For Safari, also ensure 'Allow Remote Automation' is enabled in Develop menu and `safaridriver` is working (`safaridriver --enable`).")
+            self.driver = None
+        except Exception as e:
+            print(f"⚠️ An unexpected error occurred initializing {self.browser_type.capitalize()} WebDriver: {e}")
+            self.driver = None
     
-def wait_for_element_to_disappear(driver, element:str):
-    """
-    Detect an element and return True when the target button disappears.
+    def goto(self, web_url: str) -> bool:
+        """Navigate to a URL
+        Args:
+            web_url(str): URL to your targetted website
+        Returns:
+            bool: Returns True if successful, False otherwise
+        """
+        if not self.driver:
+            print("⚠️ WebDriver not initialized. Cannot navigate to URL.")
+            return
+        try:
+            self.driver.get(web_url)
+            print(f"✅ Navigated to URL: {web_url[0:10]}...")
+            return True
+        except Exception as e:
+            print(f"⚠️ Error navigating to URL: {e}")
+            return False
+        
+    def quit(self) -> bool:
+        """Quit the webdriver"""
+        if not self.driver:
+            return
+        try:
+            self.driver.quit()
+            print("✅ WebDriver quit successfully.")
+            self.driver = None
+            return True
+        except Exception as e:
+            print(f"⚠️ Error quitting WebDriver: {e}")
+            return False
+        
+    def wait_for_element_to_disappear(self, element:str) -> bool:
+        """Detect an element and return True when the target button disappears.
+        Args:
+            element(str): a string containing the target html element. Navigates using XPATH.
+        Returns:
+            bool: Return True when button has disappeared, false is error occurs
+        """
+        try:
+            print(f"⏳ Waiting for target element to disappear")
+            while True:
+                buttons = self.driver.find_elements(By.XPATH, element)
+                if len(buttons) == 0:
+                    break  # Exit the loop when all buttons are gone
+                time.sleep(3)  # Short delay to avoid excessive checks
+                
+            print("✅ Element has disappeared. Proceeding with the script...")
+            return True
+        except Exception as e:
+            print(f"⚠️ An unexpected error occurred: {e}")
+            return False
 
-    Args:
-        driver: The Selenium WebDriver instance.
-        element(str): a string containing the target html element
-    Returns:
-        bool: Return True when button has disappeared, false is error occurs
-    """
-    try:
-        print(f"⏳ Waiting for target element to disappear")
-        while True:
-            buttons = driver.find_elements(By.XPATH, element)
-            if len(buttons) == 0:
-                break  # Exit the loop when all buttons are gone
-            time.sleep(1)  # Short delay to avoid excessive checks
+    def find_and_type_into_web_element(self, element: str, text_to_type: str, clear_first: bool = True, timeout: int = 30) -> bool:
+        """
+        Waits for a WebElement to be visible, optionally clears it, and types text into it.
 
-        print("✅ Element has disappeared. Proceeding with the script...")
-    except Exception as e:
-        print(f"⚠️ An unexpected error occurred: {e}")
+        Args:
+            driver: The Selenium WebDriver instance.
+            element(str): The Selenium WebElement (e.g., input, textarea) to type into.
+            text_to_type: The string to type into the element.
+            clear_first: If True (default), clears the text in the element before typing.
+            timeout: Maximum time in seconds to wait for the element to be visible. Default is 30 seconds. Increase if loading time is long.
+
+        Returns:
+            bool: True if text successfully typed in , False otherwise.
+        """
+        try:
+            # Wait for the element to be present and visible
+            wait = WebDriverWait(self.driver, timeout)
+            visible_element = wait.until(EC.visibility_of_element_located((By.XPATH, element)))
+
+            # Optional: Clear the field before typing
+            if clear_first:
+                visible_element.send_keys(Keys.CONTROL + "a")  # Select all text
+                visible_element.send_keys(Keys.DELETE)  # Delete selected text
+
+            # Perform the typing action
+            visible_element.send_keys(text_to_type)
+            print(f"✅ Successfully typed '{text_to_type}' into the element")
+            return True
+        except TimeoutException:
+            print(f"⚠️ Error: Element was not found or not visible within {timeout} seconds.")
+            return False
+        except ElementNotInteractableException as e:
+            print(f"⚠️ Error: Element found but could not be interacted with (might be disabled or not an input field). Details: {e}")
+            return False
+        except Exception as e:
+            print(f"⚠️ An unexpected error occurred during typing: {e}")
+            return False
+
+    def find_and_click_web_element(self, element:str, timeout: int = 30)-> bool:
+        """Waits for a WebElement to be clickable and then clicks it.
+        Args:
+            driver: The Selenium WebDriver instance.
+            element (str): The Selenium WebElement to click.
+            timeout: Maximum time in seconds to wait for the element to be clickable. Default is 30 seconds. Increase if loading time is long
+
+        Returns:
+            bool: True if the click was successful, False otherwise.
+        """
+        try:
+            # Wait for the element to be present, visible, and clickable
+            wait = WebDriverWait(self.driver, timeout)
+            clickable_element = wait.until(EC.element_to_be_clickable((By.XPATH, element)))
+
+            # Perform the click
+            clickable_element.click()
+            print(f"✅ Element clicked")
+            return True
+        except TimeoutException:
+            print(f"⚠️ Error: Element was not found or not clickable within {timeout} seconds.")
+            return False
+        except (ElementNotInteractableException, ElementClickInterceptedException) as e:
+            print(f"⚠️ Error: Element found but could not be clicked (might be obscured, disabled, or not interactive). Details: {e}")
+            return False
+        except Exception as e:
+            print(f"⚠️ An unexpected error occurred during click: {e}")
+            return False
         
