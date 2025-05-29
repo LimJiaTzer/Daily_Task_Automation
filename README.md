@@ -16,11 +16,6 @@ A Python script designed to automate your mundane Windows-based daily tasks and 
   Overcome SAP timeout issues and reinitiates the application to maintain smooth operation.
 - 🌛 **Time defined tasks**  
   Automatically detect time and run tasks after the time indicated
-
----
-
-## 🌐 Advanced Features
-
 - 🌍 **Web Automation with Selenium**  
   Automate browser tasks like exporting data from Power BI and integrating it directly into your Excel workflows.
 - 🐞 **Robust Debugging Framework**  
