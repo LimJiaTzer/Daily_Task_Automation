@@ -20,7 +20,6 @@ from selenium.common.exceptions import TimeoutException, ElementNotInteractableE
 from colorama import Fore, Style
 import platform
 
-
 """
 ----------------------------------------------
 The function below is to focus on the Python script window
@@ -111,7 +110,7 @@ def print_tasks(day_of_week:str, tasks:dict) -> None:
         
 """
 --------------------------------------------------------------
-The functions below are to open applications, websites and files
+The functions below are to open applications and files
 ---------------------------------------------------------------
 """
 def open_excel_file(excelfilepath:str) -> None:
@@ -131,22 +130,6 @@ def open_excel_file(excelfilepath:str) -> None:
         print(f"⚠️ {fnf} ⚠️")
     except AttributeError as ae:
         print(f"⚠️ Attribute error: {ae} ⚠️")
-    except Exception as e:
-        print(f"⚠️ Error: {e} ⚠️")
-
-def open_website(link:str) -> None:
-    """ Function to open a website in the default web browser.
-    Args:
-        link (str): The URL of the website to open.
-    """
-    try:
-        webbrowser.open(link)
-        focus_python_script()
-        print(f"🌐 Website opened: {link}")
-    except ValueError as ve:
-        print(f"⚠️ {ve} ⚠️")
-    except webbrowser.Error as we:
-        print(f"⚠️ Webbrowser error: {we} ⚠️")
     except Exception as e:
         print(f"⚠️ Error: {e} ⚠️")
 
@@ -722,15 +705,15 @@ The class below is to interact with web elements, it contains the following meth
 1. find and click buttons
 2. find and type into an element
 3. wait for an element to disappear (typically used to detect loading)
+4. Open up a website on your default browser
 ---------------------------------------
 """
-     
+
 class WebAutomation:
     def __init__(self, browser_type:str = "chrome"):
         """Initializes the WebAutomation class with a website link and optional parameters.
         Args:   
             browser_type(str): Enter the browser type for your driver. Supported browsers are chrome(chrome), safari(safari) and microsoft edge(edge). Default is Chrome
-
         """
         self.browser_type = browser_type.lower()
 
@@ -776,7 +759,7 @@ class WebAutomation:
         except Exception as e:
             print(f"⚠️ An unexpected error occurred initializing {self.browser_type.capitalize()} WebDriver: {e}")
             self.driver = None
-    
+
     def goto(self, web_url: str) -> bool:
         """Navigate to a URL
         Args:
@@ -822,7 +805,7 @@ class WebAutomation:
                 if len(buttons) == 0:
                     break  # Exit the loop when all buttons are gone
                 time.sleep(3)  # Short delay to avoid excessive checks
-                
+            
             print("✅ Element has disappeared. Proceeding with the script...")
             return True
         except Exception as e:
@@ -896,3 +879,19 @@ class WebAutomation:
             print(f"⚠️ An unexpected error occurred during click: {e}")
             return False
         
+    @staticmethod
+    def open_website(link:str) -> None:
+        """ Function to open a website in the default web browser. Use this when you want to open website without driver so that browser doesn't close when script ends or quit method is called.
+        Args:
+            link (str): The URL of the website to open.
+        """
+        try:
+            webbrowser.open(link)
+            focus_python_script()
+            print(f"🌐 Website opened: {link}")
+        except ValueError as ve:
+            print(f"⚠️ {ve} ⚠️")
+        except webbrowser.Error as we:
+            print(f"⚠️ Webbrowser error: {we} ⚠️")
+        except Exception as e:
+            print(f"⚠️ Error: {e} ⚠️")
