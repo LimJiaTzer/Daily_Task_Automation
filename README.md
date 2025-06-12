@@ -1,8 +1,8 @@
 # 🛠️ Daily Task Automation
 
 A Python script designed to automate your mundane Windows-based daily tasks and workflows with just one click. It seamlessly connects multiple processes like Excel macro execution, file management, application control, and web automation into a streamlined pipeline—boosting productivity and reducing manual effort.  
-![image](https://github.com/user-attachments/assets/a88697bd-0e24-439c-8f29-6c6a490df276)
-
+<img src="https://github.com/user-attachments/assets/a88697bd-0e24-439c-8f29-6c6a490df276" alt="Top 8 Certificate" width="800"/>  
+  
 
 ---
 
